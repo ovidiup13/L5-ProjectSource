@@ -1,0 +1,7 @@
+{
+    "repositories": [{
+        "name": "tensorflow",
+        "owner": "tensorflow",
+        "url": "https://github.com/tensorflow/tensorflow.git"
+    }]
+}
