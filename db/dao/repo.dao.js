@@ -9,4 +9,8 @@ module.exports = {
             url: repo.url
         });
     },
+
+    getRepositories: function () {
+        return Repository.find({});
+    }
 };
