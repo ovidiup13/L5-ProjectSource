@@ -21,5 +21,8 @@
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "serve-favicon": "~2.4.5"
+  },
+  "devDependencies": {
+    "graphql-request": "^1.4.0"
   }
 }
