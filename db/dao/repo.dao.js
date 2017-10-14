@@ -19,5 +19,9 @@ module.exports = {
         return Repository.findOne({
             "_id": `${owner}:${name}`
         });
+    },
+
+    updateRepository: function (repo) {
+        return repo.save();
     }
 };
