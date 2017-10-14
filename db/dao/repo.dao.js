@@ -1,5 +1,5 @@
 const monoose = require("mongoose");
-const Repository = require("../models/repo.model");
+const Repository = require("../models/repository").model;
 
 module.exports = {
     createRepository: function (repo) {
