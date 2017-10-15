@@ -1,14 +1,12 @@
 const data = require("../data/repos");
 const mongoose = require("../db/db");
-
 const RepositoryDAO = require("../db/dao/repo.dao");
 const Promise = require("bluebird").Promise;
-
 const graphQLClient = require("./graphql_client");
-
 const queryPR = require("./queries/pr_query");
 const queryIssue = require("./queries/issue_query");
 
+// create the respositories and gracefully close mongoose connection
 createRepositories(data.repositories)
     .then(() => {
         console.log("All repositories successfully added to DB.");
@@ -19,6 +17,16 @@ createRepositories(data.repositories)
         console.error(err);
     });
 
+/**
+ * --------------------------------------
+ * "Business" logic
+ * --------------------------------------
+ */
+
+/**
+ * Goes through entire repos in data.json and retrieves info from Github API.
+ * @param {Repository array with objects containing name, owner and url of repo.} repos 
+ */
 function createRepositories(repos) {
     return Promise.all(repos.map(repo => {
         return createRepository(repo)
@@ -28,6 +36,10 @@ function createRepositories(repos) {
     }));
 }
 
+/**
+ * Function that pulls together info for a repo: pull requests and issues.
+ * @param {Repository object with name, owner and url properties.} repo 
+ */
 async function createRepository(repo) {
     const repoResult = await getPullRequests(graphQLClient, queryPR, repo);
     const pullRequests = repoResult.repository.pullRequests.edges.map(pr => mapToPullRequestModel(pr.node));
@@ -36,6 +48,12 @@ async function createRepository(repo) {
     return storeRepository(repo, issues, pullRequests);
 }
 
+/**
+ * Function that retrieves all issues from each pull request's description.
+ * Issue numbers are added to each PR object. Returns array of all issues.
+ * @param {Repository object.} repo 
+ * @param {Pull Request model objects.} pullRequests 
+ */
 async function getIssues(repo, pullRequests) {
     let issues = [];
 
@@ -50,11 +68,18 @@ async function getIssues(repo, pullRequests) {
         }
     }
 
+    // return the result of all promises that have been resolved. 
     return Promise.all(issues.map(reflect))
         .then(results => {
             return results.filter(x => x.status === "resolved").map(x => x.result);
         });
 }
+
+/**
+ * --------------------------------------
+ * API functions
+ * --------------------------------------
+ */
 
 /**
  * Retrieves repository information from GitHub API.
@@ -78,6 +103,13 @@ async function getIssue(client, query, repo, issue) {
     return mapToIssueModel(response.repository.issue);
 }
 
+
+/**
+ * --------------------------------------
+ * DB functions
+ * --------------------------------------
+ */
+
 /**
  * Creates DB document with repository information.
  * @param {Repository object with name, repo and url properties.} repo 
@@ -89,6 +121,12 @@ function storeRepository(repo, issues, pullRequests) {
 }
 
 /**
+ * --------------------------------------
+ * Utility functions
+ * --------------------------------------
+ */
+
+/**
  * Returns the elements that match an issue number in the body text of a pull request.
  * @param {Body text of a pull request.} text 
  */
@@ -96,6 +134,10 @@ function getIssueNumbers(text) {
     return text.match(/#[0-9]+/g);
 }
 
+/**
+ * Utility function that categorizes promises in either resolved or rejected.
+ * @param {Promise object} promise 
+ */
 function reflect(promise) {
     return promise.then(function (result) {
             return {
@@ -111,6 +153,10 @@ function reflect(promise) {
         });
 }
 
+/**
+ * Mapper function from response to Pull Request model.
+ * @param {Pull Request response from GitHub API.} pr 
+ */
 function mapToPullRequestModel(pr) {
     return {
         _id: pr.id,
@@ -124,6 +170,10 @@ function mapToPullRequestModel(pr) {
     }
 }
 
+/**
+ * Mapper function from response to Issue model.
+ * @param {Issue response from GitHub API.} issue 
+ */
 function mapToIssueModel(issue) {
     return {
         _id: issue.number,
