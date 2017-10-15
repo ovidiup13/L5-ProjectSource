@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
-const Issue = require("./issue");
 
 const PullRequestSchema = new mongoose.Schema({
     _id: String,
     bodyText: String,
     state: String,
-    issues: [Issue.schema],
+    issues: [Number], // ids of issues
     mergeCommit: String,
     createdAt: Date,
     closedAt: Date

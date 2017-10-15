@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const IssueSchema = new mongoose.Schema({
     _id: Number,
+    title: String,
     bodyText: String,
     state: String,
     priority: String,
