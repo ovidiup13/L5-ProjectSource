@@ -7,7 +7,7 @@ const PullRequestSchema = new mongoose.Schema({
     issues: [Number], // ids of issues
     mergeCommit: String,
     createdAt: Date,
-    closedAt: Date
+    updatedAt: Date
 });
 
 module.exports = {

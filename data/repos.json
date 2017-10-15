@@ -1,7 +1,13 @@
 {
     "repositories": [{
-        "name": "tensorflow",
-        "owner": "tensorflow",
-        "url": "https://github.com/tensorflow/tensorflow.git"
-    }]
+            "name": "tensorflow",
+            "owner": "tensorflow",
+            "url": "https://github.com/tensorflow/tensorflow.git"
+        },
+        {
+            "name": "vscode",
+            "owner": "Microsoft",
+            "url": "https://github.com/Microsoft/vscode.git"
+        }
+    ]
 }

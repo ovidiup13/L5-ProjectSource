@@ -30,10 +30,10 @@ function createRepositories(repos) {
 
 async function createRepository(repo) {
     const repoResult = await getPullRequests(graphQLClient, queryPR, repo);
-    const pullRequests = repoResult.repository.pullRequests.edges.map(pr => pr.node);
+    const pullRequests = repoResult.repository.pullRequests.edges.map(pr => mapToPullRequestModel(pr.node));
     const issues = await getIssues(repo, pullRequests);
 
-    // return storeRepository(repo, issues, pullRequests);
+    return storeRepository(repo, issues, pullRequests);
 }
 
 async function getIssues(repo, pullRequests) {
@@ -41,14 +41,16 @@ async function getIssues(repo, pullRequests) {
 
     for (let pr of pullRequests) {
         let issueNumbers = getIssueNumbers(pr.bodyText);
+
         if (issueNumbers) {
-            let issueResults = await Promise.map(issueNumbers, n => {
-                return getIssue(graphQLClient, queryIssue, repo, parseInt(n.substring(1))); //parse to int, ignore '#'
+            issueNumbers.map(n => parseInt(n.substring(1))).forEach(n => {
+                pr.issues.push(n);
+                issues.push(getIssue(graphQLClient, queryIssue, repo, n)); //parse to int, ignore '#'
             });
-            issues = issues.concat(issueResults);
-            console.log(issues);
         }
     }
+
+    return Promise.all(issues);
 }
 
 /**
@@ -89,6 +91,19 @@ function storeRepository(repo, issues, pullRequests) {
  */
 function getIssueNumbers(text) {
     return text.match(/#[0-9]+/g);
+}
+
+function mapToPullRequestModel(pr) {
+    return {
+        _id: pr.id,
+        title: pr.title,
+        bodyText: pr.bodyText,
+        state: pr.state,
+        issues: [],
+        mergeCommit: pr.mergeCommit.abbreviatedOid,
+        createdAt: pr.createdAt,
+        updatedAt: pr.updatedAt
+    }
 }
 
 function mapToIssueModel(issue) {

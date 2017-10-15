@@ -2,15 +2,20 @@ module.exports = {
   query: function (owner, name) {
     return `query($issueOrder:IssueOrder) {
   repository(name:"${name}", owner:"${owner}") {
-    pullRequests(last:10, orderBy: $issueOrder, states:MERGED) {
+    pullRequests(last:100, orderBy: $issueOrder, states:MERGED) {
       edges {
         node {
           id
+          title
+          state
           bodyText
           createdAt
-          state
+          updatedAt
           mergeCommit {
-            id
+            oid
+            abbreviatedOid
+            messageBody
+            committedDate
           }
         }
       }
