@@ -50,7 +50,10 @@ async function getIssues(repo, pullRequests) {
         }
     }
 
-    return Promise.all(issues);
+    return Promise.all(issues.map(reflect))
+        .then(results => {
+            return results.filter(x => x.status === "resolved").map(x => x.result);
+        });
 }
 
 /**
@@ -91,6 +94,21 @@ function storeRepository(repo, issues, pullRequests) {
  */
 function getIssueNumbers(text) {
     return text.match(/#[0-9]+/g);
+}
+
+function reflect(promise) {
+    return promise.then(function (result) {
+            return {
+                result: result,
+                status: "resolved"
+            }
+        },
+        function (err) {
+            return {
+                err: err,
+                status: "rejected"
+            }
+        });
 }
 
 function mapToPullRequestModel(pr) {
