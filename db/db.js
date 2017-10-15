@@ -11,9 +11,13 @@ console.log(process.env.DB_CONNECTION_URL);
 
 mongoose.Promise = bluebird.Promise;
 mongoose.connect(process.env.DB_CONNECTION_URL, {
-    useMongoClient: true
-}).catch((err) => {
-    console.error(err);
-});
+        useMongoClient: true
+    })
+    .then(() => {
+        console.log("Successfully connected to MongoDB instance.")
+    })
+    .catch((err) => {
+        console.error(err);
+    });
 
 module.exports = mongoose;

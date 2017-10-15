@@ -1,4 +1,3 @@
-const monoose = require("mongoose");
 const Repository = require("../models/repository").model;
 
 module.exports = {
