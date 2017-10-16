@@ -21,6 +21,6 @@ const options = {
  */
 module.exports = {
     startSonar: function (repo, pathToSources) {
-        spawn("sonar-scanner", [projectKey(repo.owner, repo.name), projectName(repo.name), sources(pathToSources)]);
+        return spawn("sonar-scanner", [projectKey(repo.owner, repo.name), projectName(repo.name), sources(pathToSources)]);
     }
 };
