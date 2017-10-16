@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const Promise = require("bluebird").Promise;
 
-const tempPath = path.join(__dirname, "../tmp");
+const tempPath = require("../constants").TEMP_FOLDER;
 
 const repositories = require("../data/repos").repositories;
 
