@@ -24,6 +24,7 @@
     "serve-favicon": "~2.4.5"
   },
   "devDependencies": {
-    "graphql-request": "^1.4.0"
+    "graphql-request": "^1.4.0",
+    "nodegit": "^0.20.2"
   }
 }
