@@ -29,7 +29,9 @@ module.exports = {
     getPullRequests: function (id) {
         return Repository.findOne({
             "_id": id
-        }).select("pullRequests -_id");
+        }).select("pullRequests -_id").sort({
+            "pullRequests.updatedAt": -1
+        });
     },
 
     getIssues: function (id) {
