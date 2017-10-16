@@ -10,7 +10,7 @@ module.exports = {
           state
           bodyText
           createdAt
-          updatedAt
+          mergedAt
           mergeCommit {
             oid
             abbreviatedOid

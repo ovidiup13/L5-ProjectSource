@@ -164,9 +164,9 @@ function mapToPullRequestModel(pr) {
         bodyText: pr.bodyText,
         state: pr.state,
         issues: [],
-        mergeCommit: pr.mergeCommit.abbreviatedOid,
+        mergeCommit: pr.mergeCommit.oid,
         createdAt: pr.createdAt,
-        updatedAt: pr.updatedAt
+        mergedAt: pr.mergedAt
     }
 }
 
