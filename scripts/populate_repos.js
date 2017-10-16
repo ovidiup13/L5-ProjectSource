@@ -2,7 +2,7 @@ const data = require("../data/repos");
 const mongoose = require("../db/db");
 const RepositoryDAO = require("../db/dao/repo.dao");
 const Promise = require("bluebird").Promise;
-const graphQLClient = require("./graphql_client");
+const graphQLClient = require("./clients/graphql_client");
 const queryPR = require("./queries/pr_query");
 const queryIssue = require("./queries/issue_query");
 
