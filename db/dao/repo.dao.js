@@ -13,16 +13,28 @@ module.exports = {
     },
 
     getRepositories: function () {
-        return Repository.find({});
+        return Repository.find({}).select('name owner url -_id');
     },
 
-    getRepository: function (name, owner) {
+    getRepository: function (id) {
         return Repository.findOne({
-            "_id": `${owner}:${name}`
-        });
+            "_id": id
+        }).select('name owner url');
     },
 
     updateRepository: function (repo) {
         return repo.save();
+    },
+
+    getPullRequests: function (id) {
+        return Repository.findOne({
+            "_id": id
+        }).select("pullRequests -_id");
+    },
+
+    getIssues: function (id) {
+        return Repository.findOne({
+            "_id": id
+        }).select("issues -_id");
     }
 };
