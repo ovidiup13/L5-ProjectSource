@@ -35,6 +35,9 @@ function cloneRepositories(repos, clonePath) {
                 console.log(`${repo.owner}:${repo.name} - Cloned repo already exists. Path: ${r.path()}`);
                 return updateRepository(r, repo);
             }).catch(err => {
+
+                //TODO: clone repos if read or update fails
+
                 console.error(`${repo.owner}:${repo.name} - Not a valid repository at current path.`);
             });
         }
