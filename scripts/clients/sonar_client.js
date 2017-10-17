@@ -1,5 +1,5 @@
 const {
-    spawn
+    execFile
 } = require("child_process");
 
 const options = {
@@ -20,7 +20,9 @@ const options = {
  * 2. Update the global settings to point to your SonarQube server by editing <install_directory>/conf/sonar-scanner.properties.
  */
 module.exports = {
-    startSonar: function (repo, pathToSources) {
-        return spawn("sonar-scanner", [projectKey(repo.owner, repo.name), projectName(repo.name), sources(pathToSources)]);
+    startSonar: function (repo, pathToSources, cwd) {
+        return execFile("sonar-scanner", [projectKey(repo.owner, repo.name), projectName(repo.name), sources(pathToSources)], {
+            cwd: cwd
+        });
     }
 };
