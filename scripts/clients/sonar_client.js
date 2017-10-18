@@ -11,7 +11,8 @@ const options = {
     },
     projectKey: function (owner, name) {
         return `-Dsonar.projectKey="${owner}:${name}"`;
-    }
+    },
+    encoding: `-Dsonar.sourceEncoding="UTF-8"`
 }
 
 /**
@@ -21,7 +22,7 @@ const options = {
  */
 module.exports = {
     startSonar: function (repo, pathToSources, cwd) {
-        return execFile("sonar-scanner", [projectKey(repo.owner, repo.name), projectName(repo.name), sources(pathToSources)], {
+        return execFile("sonar-scanner", [options.projectKey(repo.owner, repo.name), options.projectName(repo.name), options.sources(pathToSources), options.encoding], {
             cwd: cwd
         });
     }
