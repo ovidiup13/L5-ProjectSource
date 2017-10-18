@@ -1,8 +1,8 @@
 {
     "repositories": [{
-            "name": "tensorflow",
-            "owner": "tensorflow",
-            "url": "https://github.com/tensorflow/tensorflow.git"
+            "name": "react",
+            "owner": "facebook",
+            "url": "https://github.com/facebook/react.git"
         },
         {
             "name": "vscode",
