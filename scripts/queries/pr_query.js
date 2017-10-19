@@ -2,7 +2,7 @@ module.exports = {
   query: function (owner, name) {
     return `query($issueOrder:IssueOrder) {
   repository(name:"${name}", owner:"${owner}") {
-    pullRequests(last:100, orderBy: $issueOrder, states:MERGED) {
+    pullRequests(last:10, orderBy: $issueOrder, states:MERGED) {
       edges {
         node {
           id
