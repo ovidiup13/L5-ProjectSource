@@ -1,13 +1,7 @@
 {
     "repositories": [{
-            "name": "react",
-            "owner": "facebook",
-            "url": "https://github.com/facebook/react.git"
-        },
-        {
-            "name": "vscode",
-            "owner": "Microsoft",
-            "url": "https://github.com/Microsoft/vscode.git"
-        }
-    ]
+        "name": "react",
+        "owner": "facebook",
+        "url": "https://github.com/facebook/react.git"
+    }]
 }
