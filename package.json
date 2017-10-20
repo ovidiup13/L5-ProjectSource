@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
+    "test": "jasmine test",
     "clone": "cd scripts && node clone_repos.js",
     "enrich": "cd scripts && node populate_repos.js",
     "sonar": "cd scripts && node sonar_repos.js",
