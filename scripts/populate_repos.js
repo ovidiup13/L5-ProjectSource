@@ -6,6 +6,8 @@ const graphQLClient = require("./clients/graphql_client");
 const queryPR = require("./queries/pr_query");
 const queryIssue = require("./queries/issue_query");
 
+const numberOfPullRequests = 10;
+
 // create the respositories and gracefully close mongoose connection
 createRepositories(data.repositories)
     .then(() => {
@@ -43,6 +45,7 @@ function createRepositories(repos) {
 async function createRepository(repo) {
     const repoResult = await getPullRequests(graphQLClient, queryPR, repo);
     const pullRequests = repoResult.repository.pullRequests.edges.map(pr => mapToPullRequestModel(pr.node));
+    console.log(pullRequests);
     const issues = await getIssues(repo, pullRequests);
 
     return storeRepository(repo, issues, pullRequests);
@@ -88,7 +91,7 @@ async function getIssues(repo, pullRequests) {
  * @param {Repository model instance.} repo 
  */
 function getPullRequests(client, query, repo) {
-    return client.request(query.query(repo.owner, repo.name), query.variables);
+    return client.request(query.query(repo.owner, repo.name, numberOfPullRequests), query.variables);
 }
 
 /**
@@ -164,7 +167,9 @@ function mapToPullRequestModel(pr) {
         bodyText: pr.bodyText,
         state: pr.state,
         issues: [],
-        mergeCommit: pr.mergeCommit.oid,
+        mergeCommit: {
+            _id: pr.mergeCommit.oid
+        },
         createdAt: pr.createdAt,
         mergedAt: pr.mergedAt
     }
