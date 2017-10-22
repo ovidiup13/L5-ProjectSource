@@ -26,9 +26,31 @@ function promisify(child) {
         });
 
         child.on('exit', () => {
-            resolve(result);
+            resolve(processNumStatDiff(result));
         });
     });
+}
+
+function processNumStatDiff(diffOutput) {
+
+    let result = {
+        insertions: 0,
+        deletions: 0,
+        filesChanged: 0
+    };
+
+    const lines = diffOutput.split("\n");
+    for (let line of lines) {
+        if (!line) {
+            continue;
+        }
+        const data = line.split("\t");
+        result.insertions += parseInt(data[0]);
+        result.deletions += parseInt(data[1]);
+        result.filesChanged += 1;
+    }
+
+    return result;
 }
 
 module.exports = {
