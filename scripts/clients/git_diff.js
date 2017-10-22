@@ -6,23 +6,31 @@ const gitCommand = "git";
 const gitDiff = "diff";
 const statOption = "--numstat";
 
-module.exports = {
-    getDiff: function (commit1, commit2, options, callback) {
+function promisify(child_process) {
+    return new Promise((resolve, reject) => {
+        const result = "";
 
-        const result = [];
+        child_process.stdout.on('data', data => {
+            result.push(data.toString());
+        });
+
+        child_process.on('error', (err) => {
+            reject(err);
+        })
+
+        child_process.on('close', () => {
+            resolve(result);
+        });
+    });
+}
+
+module.exports = {
+    getDiff: function (commit1, commit2, options) {
 
         const gitProcess = spawn(gitCommand, [gitDiff, statOption, commit1, commit2], {
             cwd: options.cwd
         });
 
-        gitProcess.stdout.on('data', data => {
-            result.push(data.toString());
-        });
-
-        gitProcess.on('close', () => {
-            callback(result);
-        })
-
-        return gitProcess;
+        return promisify(gitProcess);
     }
 }
