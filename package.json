@@ -8,7 +8,7 @@
     "clone": "cd scripts && node clone_repos.js",
     "enrich": "cd scripts && node populate_repos.js",
     "sonar": "cd scripts && node sonar_repos.js",
-    "run-all": "cd scripts && node populate_repos.js && node.clone_repos.js && node sonar_repos.js"
+    "run-all": "cd scripts && node clone_repos.js && node populate_repos.js && node sonar_repos.js"
   },
   "dependencies": {
     "bluebird": "^3.5.1",
