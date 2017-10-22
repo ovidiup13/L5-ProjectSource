@@ -30,7 +30,7 @@ module.exports = {
         return Repository.findOne({
             "_id": id
         }).select("pullRequests -_id").sort({
-            "pullRequests.mergedAt": -1
+            "pullRequests.mergedAt": "desc"
         });
     },
 
