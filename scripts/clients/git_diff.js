@@ -2,23 +2,30 @@ const {
     spawn
 } = require("child_process");
 
+const Promise = require("bluebird").Promise;
+
 const gitCommand = "git";
 const gitDiff = "diff";
 const statOption = "--numstat";
 
-function promisify(child_process) {
+function promisify(child) {
     return new Promise((resolve, reject) => {
-        const result = "";
+        let result = "";
 
-        child_process.stdout.on('data', data => {
-            result.push(data.toString());
+        child.stdout.on('data', data => {
+            console.log(data.toString());
+            result += data;
         });
 
-        child_process.on('error', (err) => {
-            reject(err);
-        })
+        child.stderr.on('data', data => {
+            console.error(data.toString());
+        });
 
-        child_process.on('close', () => {
+        child.on('error', (err) => {
+            reject(err);
+        });
+
+        child.on('exit', () => {
             resolve(result);
         });
     });
@@ -28,6 +35,7 @@ module.exports = {
     getDiff: function (commit1, commit2, options) {
 
         const gitProcess = spawn(gitCommand, [gitDiff, statOption, commit1, commit2], {
+            // stdio: "inherit",
             cwd: options.cwd
         });
 
