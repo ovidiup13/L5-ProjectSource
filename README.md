@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/ovidiup13/L5-ProjectSource.svg?branch=master)](https://travis-ci.org/ovidiup13/L5-ProjectSource)
 
+## Please check the Java version here: https://github.com/ovidiup13/tdanalysis
+
 # L5-ProjectSource
 
 Source code for my master's project. Using the scripts in this application you can:
